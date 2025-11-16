@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/dotnet/sdk:9.0'  // Use any version you need
+            args '-u root:root -v /tmp:/tmp'
+        }
+    }
 
     stages {
 
@@ -23,7 +28,22 @@ pipeline {
             }
         }
 
-        
+        stage('Test') {
+            steps {
+                script {
+                    // Running tests
+                    bat "dotnet test --no-restore --configuration Release"
+                }
+            }
+        }
+        stage('Publish') {
+            steps {
+                script {
+                    // Publishing the application
+                    bat "dotnet publish --no-restore --configuration Release --output .\\publish"
+                }
+            }
+        }
     }
 
     post {
