@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/dotnet/sdk:8.0'  // Use any version you need
+            image 'mcr.microsoft.com/dotnet/sdk:9.0'  // Use any version you need
             args '-u root:root -v /tmp:/tmp'
         }
     }
