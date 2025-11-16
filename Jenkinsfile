@@ -38,14 +38,22 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'dotnet test ProductApi.sln -c Release --no-build --logger "trx;LogFileName=test-results.trx"'
+                sh '''
+                    echo "Installing trx2junit converter..."
+                    dotnet tool install --global trx2junit
+                    export PATH="$PATH:/root/.dotnet/tools"
+        
+                    echo "Running tests..."
+                    dotnet test ProductApi.sln --configuration Release --logger "trx;LogFileName=test-results.trx"
+        
+                    echo "Converting TRX → JUnit XML..."
+                    trx2junit **/test-results.trx
+                '''
             }
             post {
                 always {
-                    step([$class: 'MSTestPublisher', 
-                        testResultsFile: '**/test-results.trx', 
-                        failOnError: false
-                    ])
+                    echo "Publishing JUnit test results..."
+                    junit '**/test-results.xml'
                 }
             }
         }
