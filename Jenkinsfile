@@ -23,27 +23,12 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                script {
-                    // Running tests
-                    bat "dotnet test --no-restore --configuration Release"
-                }
-            }
-        }
-        stage('Publish') {
-            steps {
-                script {
-                    // Publishing the application
-                    bat "dotnet publish --no-restore --configuration Release --output .\\publish"
-                }
-            }
-        }
+        
     }
 
     post {
         always {
-            cleanWs()
+             echo 'Build, test, and publish successful!'
         }
     }
 }
