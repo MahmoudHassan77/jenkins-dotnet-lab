@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  productapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: product-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    restart: unless-stopped
+    networks:
+      - product-network
+
+networks:
+  product-network:
+    driver: bridge
