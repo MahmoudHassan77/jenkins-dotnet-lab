@@ -42,19 +42,13 @@ pipeline {
                     echo "Installing trx2junit converter..."
                     dotnet tool install --global trx2junit
                     export PATH="$PATH:/root/.dotnet/tools"
-        
+
                     echo "Running tests..."
                     dotnet test ProductApi.sln --configuration Release --logger "trx;LogFileName=test-results.trx"
-        
+
                     echo "Converting TRX → JUnit XML..."
                     trx2junit **/test-results.trx
                 '''
-            }
-            post {
-                always {
-                    echo "Publishing JUnit test results..."
-                    junit '**/test-results.xml'
-                }
             }
         }
 
