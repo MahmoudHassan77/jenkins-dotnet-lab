@@ -38,11 +38,14 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'dotnet test ProductApi.sln --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"'
+                sh 'dotnet test ProductApi.sln -c Release --no-build --logger "trx;LogFileName=test-results.trx"'
             }
             post {
                 always {
-                    junit '**/test-results.trx'
+                    step([$class: 'MSTestPublisher', 
+                        testResultsFile: '**/test-results.trx', 
+                        failOnError: false
+                    ])
                 }
             }
         }
