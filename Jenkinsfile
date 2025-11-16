@@ -40,7 +40,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Running tests..."
-                    dotnet test ProductApi.sln --configuration Release"
+                    dotnet test ProductApi.sln"
                 '''
             }
         }
