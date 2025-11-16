@@ -44,6 +44,16 @@ pipeline {
                 }
             }
         }
+        stage('Docker Build and Push') {
+            agent any
+            steps {
+              withDockerRegistry(credentialsId: 'f263c7a8-7cb5-4cee-80a1-7abfe08a005b', url: 'https://index.docker.io/v1/') {
+                sh 'docker build -t product-api .'
+                sh 'docker tag  product-api atwa77/product-api:latest'
+                sh 'docker push atwa77/product-api:latest'
+              }
+            }
+        }
     }
 
     post {
